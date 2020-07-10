@@ -1,6 +1,10 @@
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,7 +39,24 @@ public class ManageBook extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
+		try {
+			Connection con = DatabaseConnection.initializeDatabase();
+			
+			PreparedStatement st = con.prepareStatement("insert into Book(name, copies) values (?, ?)");
+			st.setString(1, request.getParameter("name"));
+			st.setInt(2, Integer.valueOf(request.getParameter("copies")));
+			
+			st.executeUpdate();
+			st.close();
+			con.close();
+			
+			PrintWriter out = response.getWriter(); 
+            out.println("<html><body><b>Successfully Inserted"
+                        + "</b></body></html>"); 
+        } 
+        catch (Exception e) { 
+            e.printStackTrace(); 
+        } 
+    } 
+		
 }

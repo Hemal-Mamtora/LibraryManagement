@@ -32,6 +32,7 @@
 		<web-resource-collection>
 			<web-resource-name>Librarian</web-resource-name>
 			<url-pattern>/ManageBook</url-pattern>
+			<url-pattern>/ManageBook.jsp</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
 		</web-resource-collection>
