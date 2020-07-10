@@ -8,9 +8,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="/Reserve" method="post">
+	<form action="./Reserve" method="post">
     Select a Book:&nbsp;
-    <select name="books">
+    <select name="books" id="books">
         <c:forEach items="${books}" var="book">
             <option value="${book.id}">${book.name}</option>
         </c:forEach>

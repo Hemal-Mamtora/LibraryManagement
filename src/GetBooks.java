@@ -18,7 +18,8 @@ public class GetBooks {
 				int id = result.getInt("id");
 				String name = result.getString("name");
 				int copies = result.getInt("copies");
-				books.add(new Book(id, name, copies));
+				if (copies > 1)
+					books.add(new Book(id, name, copies));
 			}
 			
 			con.close();

@@ -1,6 +1,10 @@
 
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -50,9 +54,44 @@ public class Reserve extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		 int bookid = Integer.parseInt(request.getParameter("book"));
-		 
-		    request.setAttribute("selectedBook", bookid);
+		try {
+			int bookid = Integer.parseInt(request.getParameter("books"));
+			
+			Connection con = DatabaseConnection.initializeDatabase();
+			
+			PreparedStatement st = con.prepareStatement("insert into Reservation(bookid, username, fromDate, toDate) values (?, ?, ?, ?)");
+			
+			
+			
+			
+			java.util.Date dateFrom = new java.util.Date();
+			
+			Calendar c = Calendar.getInstance();
+			c.setTime(dateFrom);
+			c.add(Calendar.DAY_OF_YEAR, 7);
+			
+			java.util.Date dateTo = c.getTime();
+			
+			st.setInt(1, bookid);
+			st.setString(2, request.getUserPrincipal().getName());
+			st.setDate(3, new Date(dateFrom.getTime()));
+			st.setDate(4, new Date(dateTo.getTime()));
+			
+			st.executeUpdate();
+			
+			PreparedStatement s2 = con.prepareStatement("update Book set copies = copies - 1 where id = ?;");
+			s2.setInt(1, bookid);
+			
+			s2.executeUpdate();
+			
+			con.close();
+			st.close();
+			s2.close();
+			response.getWriter().print("Book reserved sucessfully");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
