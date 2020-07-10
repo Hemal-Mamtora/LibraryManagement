@@ -59,13 +59,13 @@
         </form-login-config>
 	</login-config>
   
-  <servlet>
+<!-- <servlet>
         <servlet-name>Reserve</servlet-name>
         <servlet-class>Reserve</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Reserve</servlet-name>
         <url-pattern>/Reserve</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>   -->
     
 </web-app>
