@@ -6,15 +6,22 @@ public class Book {
 		Booked
 	};
 	
+	int id;
 	String name;
-	String id;
-	String author;
-	Status status;
+	int copies;
 	
-	Book(String name, String id, String author, Status status){
+	Book(int id, String name, int copies){
 		this.name = name;
 		this.id = id;
-		this.author = author;
-		this.status = status;
+		this.copies = copies;
+	}
+	public int getId() {
+		return id;
+	}
+	public String getName() {
+		return name;
+	}
+	public int getCopies() {
+		return copies;
 	}
 }

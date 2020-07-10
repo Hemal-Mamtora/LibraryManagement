@@ -40,6 +40,7 @@ public class ManageBook extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
+			
 			Connection con = DatabaseConnection.initializeDatabase();
 			
 			PreparedStatement st = con.prepareStatement("insert into Book(name, copies) values (?, ?)");

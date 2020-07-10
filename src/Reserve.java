@@ -1,6 +1,9 @@
 
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +30,19 @@ public class Reserve extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		GetBooks DAOBooks = new GetBooks();
+		try {
+			List<Book> books = DAOBooks.get();
+			
+			request.setAttribute("books", books);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Reserve.jsp");
+            
+			dispatcher.forward(request, response);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -35,7 +50,9 @@ public class Reserve extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		 int bookid = Integer.parseInt(request.getParameter("book"));
+		 
+		    request.setAttribute("selectedBook", bookid);
 	}
 
 }
