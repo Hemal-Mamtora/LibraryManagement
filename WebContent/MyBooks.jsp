@@ -10,13 +10,13 @@
 <body>
 <c:forEach items="${list}" var="entry">
     <tr>
-        <td>${entry.bookid}</td>
         <td>${hm[Integer(entry.bookid)]}</td>
         <td>${entry.fromDate}</td>
         <td>${entry.toDate}</td>
         <td>
             <form action="./MyBooks" method="post">
                 <input type="hidden" name="id" value="${entry.id}" />
+                <input type="hidden" name="bookid" value="${entry.bookid}" />
                 <input type="submit" value="returnIt" name="returnIt">
             </form>
         </td>

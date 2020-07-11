@@ -1,6 +1,7 @@
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class MyBooks extends HttpServlet {
 		GetBooks DAO = new GetBooks();
 		List<ReservationEntry> list = DAO.mine(request.getUserPrincipal().getName());
 		Map<Integer, String> hm = DAO.map();
-		System.out.println(hm.get(1));
+		
 		request.setAttribute("list", list);
 		request.setAttribute("hm", hm);
 		
@@ -46,8 +47,18 @@ public class MyBooks extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		GetBooks DAO = new GetBooks();
+		try {
+			DAO.returnBook(Integer.parseInt(request.getParameter("id")),
+					Integer.parseInt(request.getParameter("bookid")));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.sendRedirect("./MyBooks");
 	}
 
 }

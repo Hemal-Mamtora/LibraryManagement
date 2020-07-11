@@ -9,7 +9,7 @@ public class ReservationEntry {
 	boolean returned;
 	
 	public ReservationEntry(int id, int bookid, String username, Date fromDate, Date toDate, boolean returned) {
-		this.bookid = id;
+		this.id = id;
 		this.bookid = bookid;
 		this.username = username;
 		this.fromDate = fromDate;

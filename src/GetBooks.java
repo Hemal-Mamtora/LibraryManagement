@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +80,29 @@ public class GetBooks {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	boolean returnBook(int entryId, int bookId) throws SQLException {
+		try {
+			Connection con = DatabaseConnection.initializeDatabase();
+			PreparedStatement st = con.prepareStatement("update Reservation set returned = 1 where id = ?;");
+			st.setInt(1, entryId);
+			st.executeUpdate();
+			
+			st.close();
+			
+			PreparedStatement s2 = con.prepareStatement("update Book set copies = copies + 1 where id = ?;");
+			s2.setInt(1, bookId);
+			
+			s2.executeUpdate();
+			
+			s2.close();
+			con.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 	
 }
