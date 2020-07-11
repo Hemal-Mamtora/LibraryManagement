@@ -34,7 +34,7 @@ public class Reserve extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		GetBooks DAOBooks = new GetBooks();
+		BooksDAO DAOBooks = new BooksDAO();
 		try {
 			List<Book> books = DAOBooks.get();
 			

@@ -32,7 +32,7 @@ public class MyBooks extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		GetBooks DAO = new GetBooks();
+		BooksDAO DAO = new BooksDAO();
 		List<ReservationEntry> list = DAO.mine(request.getUserPrincipal().getName());
 		Map<Integer, String> hm = DAO.map();
 		
@@ -47,7 +47,7 @@ public class MyBooks extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		GetBooks DAO = new GetBooks();
+		BooksDAO DAO = new BooksDAO();
 		try {
 			DAO.returnBook(Integer.parseInt(request.getParameter("id")),
 					Integer.parseInt(request.getParameter("bookid")));

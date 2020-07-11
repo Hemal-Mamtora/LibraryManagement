@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetBooks {
+public class BooksDAO {
 	
 	List<Book> get() throws Exception{
 		List<Book> books = new ArrayList<Book>();
