@@ -16,6 +16,7 @@
 			<url-pattern>/Reserve</url-pattern>
 			<url-pattern>/MyBooks.jsp</url-pattern>
 			<url-pattern>/MyBooks</url-pattern>
+			<url-pattern>/index.jsp</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
 		</web-resource-collection>
