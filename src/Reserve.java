@@ -59,7 +59,7 @@ public class Reserve extends HttpServlet {
 			
 			Connection con = DatabaseConnection.initializeDatabase();
 			
-			PreparedStatement st = con.prepareStatement("insert into Reservation(bookid, username, fromDate, toDate) values (?, ?, ?, ?)");
+			PreparedStatement st = con.prepareStatement("insert into Reservation(bookid, username, fromDate, toDate, returned) values (?, ?, ?, ?, ?)");
 			
 			
 			
@@ -76,6 +76,7 @@ public class Reserve extends HttpServlet {
 			st.setString(2, request.getUserPrincipal().getName());
 			st.setDate(3, new Date(dateFrom.getTime()));
 			st.setDate(4, new Date(dateTo.getTime()));
+			st.setBoolean(5, false);
 			
 			st.executeUpdate();
 			
