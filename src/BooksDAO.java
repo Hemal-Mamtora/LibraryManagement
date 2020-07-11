@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,42 @@ public class BooksDAO {
 			s2.close();
 			con.close();
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	boolean reserveBook(int bookid, String username) {
+		try {
+				Connection con = DatabaseConnection.initializeDatabase();
+				PreparedStatement st = con.prepareStatement("insert into Reservation(bookid, username, fromDate, toDate, returned) values (?, ?, ?, ?, ?)");
+			
+				java.util.Date dateFrom = new java.util.Date();
+			
+				Calendar c = Calendar.getInstance();
+				c.setTime(dateFrom);
+				c.add(Calendar.DAY_OF_YEAR, 7);
+			
+				java.util.Date dateTo = c.getTime();
+			
+				st.setInt(1, bookid);
+				st.setString(2, username);
+				st.setDate(3, new Date(dateFrom.getTime()));
+				st.setDate(4, new Date(dateTo.getTime()));
+				st.setBoolean(5, false);
+			
+				st.executeUpdate();
+			
+				PreparedStatement s2 = con.prepareStatement("update Book set copies = copies - 1 where id = ?;");
+				s2.setInt(1, bookid);
+			
+				s2.executeUpdate();
+			
+				
+				st.close();
+				s2.close();
+				con.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

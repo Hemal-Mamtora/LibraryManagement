@@ -1,10 +1,6 @@
 
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.util.Calendar;
+import java.io.IOException; 
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -34,9 +30,9 @@ public class Reserve extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		BooksDAO DAOBooks = new BooksDAO();
+		BooksDAO booksDAO = new BooksDAO();
 		try {
-			List<Book> books = DAOBooks.get();
+			List<Book> books = booksDAO.get();
 			
 			request.setAttribute("books", books);
 			
@@ -57,37 +53,9 @@ public class Reserve extends HttpServlet {
 		try {
 			int bookid = Integer.parseInt(request.getParameter("books"));
 			
-			Connection con = DatabaseConnection.initializeDatabase();
+			BooksDAO booksDAO = new BooksDAO();
 			
-			PreparedStatement st = con.prepareStatement("insert into Reservation(bookid, username, fromDate, toDate, returned) values (?, ?, ?, ?, ?)");
-			
-			
-			
-			
-			java.util.Date dateFrom = new java.util.Date();
-			
-			Calendar c = Calendar.getInstance();
-			c.setTime(dateFrom);
-			c.add(Calendar.DAY_OF_YEAR, 7);
-			
-			java.util.Date dateTo = c.getTime();
-			
-			st.setInt(1, bookid);
-			st.setString(2, request.getUserPrincipal().getName());
-			st.setDate(3, new Date(dateFrom.getTime()));
-			st.setDate(4, new Date(dateTo.getTime()));
-			st.setBoolean(5, false);
-			
-			st.executeUpdate();
-			
-			PreparedStatement s2 = con.prepareStatement("update Book set copies = copies - 1 where id = ?;");
-			s2.setInt(1, bookid);
-			
-			s2.executeUpdate();
-			
-			con.close();
-			st.close();
-			s2.close();
+			booksDAO.reserveBook(bookid, request.getUserPrincipal().getName());
 			response.getWriter().print("Book reserved sucessfully");
 		}
 		catch(Exception e) {
