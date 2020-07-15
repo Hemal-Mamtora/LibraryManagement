@@ -42,12 +42,19 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession();
 		LibraryManager manager = (LibraryManager)session.getAttribute("manager");
-		LibraryManager.Status i = manager.login(request.getParameter("username"), request.getParameter("password"));
-		if (i == LibraryManager.Status.USER_AUTH_OK) {
-			response.sendRedirect("./Home");
+		
+		if (manager != null) {
+			LibraryManager.Status i = manager.login(request.getParameter("username"), request.getParameter("password"));
+			if (i == LibraryManager.Status.USER_AUTH_OK) {
+				response.sendRedirect("./Home");
+			}
 		}
+		else {
+			response.getWriter().print("manager lost, recreate session by registering in");
+		}
+		
 	}
 
 }

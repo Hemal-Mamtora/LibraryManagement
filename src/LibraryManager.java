@@ -23,8 +23,12 @@ public class LibraryManager {
 	
 	Status login(String username,String password) {
 		Person user = users.get(username);
-		if (user == null)
+		
+		if (user == null) {
+			System.out.println("User with username: "+ username + " does not exist");
 			return Status.USER_DOES_NOT_EXIST;
+		}
+			
 		if (user.getPwd().equals(password)){
 			return Status.USER_AUTH_OK;
 		}
