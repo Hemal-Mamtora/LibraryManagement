@@ -1,3 +1,4 @@
+package library;
 
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class Register extends HttpServlet {
 					request.getParameter("name"),
 					request.getParameter("username"),
 					request.getParameter("password1"),
-					Boolean.valueOf(request.getParameter("IsLibrarian"))
+					Boolean.valueOf(request.getParameter("isLibrarian"))
 				)
 			);
 			if (i == LibraryManager.Status.USER_INSERTED) {

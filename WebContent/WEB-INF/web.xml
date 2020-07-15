@@ -9,8 +9,8 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
-  <security-constraint>
+ <!--
+   <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Reserve</web-resource-name>
 			<url-pattern>/Reserve</url-pattern>
@@ -25,7 +25,6 @@
 		</auth-constraint>
 
 		<user-data-constraint>
-			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
 			<transport-guarantee>NONE</transport-guarantee>
 		</user-data-constraint>
 		
@@ -44,7 +43,6 @@
 		</auth-constraint>
 
 		<user-data-constraint>
-			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
 			<transport-guarantee>NONE</transport-guarantee>
 		</user-data-constraint>
 		
@@ -62,6 +60,8 @@
             <form-error-page>/error.jsp</form-error-page>
         </form-login-config>
 	</login-config>
+ 
+   -->
   
 <!-- <servlet>
         <servlet-name>Reserve</servlet-name>

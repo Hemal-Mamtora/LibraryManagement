@@ -1,3 +1,4 @@
+package library;
 import java.util.HashMap;
 //import java.util.List;
 
@@ -33,5 +34,9 @@ public class LibraryManager {
 			return Status.USER_AUTH_OK;
 		}
 		return Status.USER_AUTH_ERR;
+	}
+	
+	Person getUser(String username) {
+		return users.get(username);
 	}
 }

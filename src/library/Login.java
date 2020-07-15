@@ -1,3 +1,4 @@
+package library;
 
 
 import java.io.IOException;
@@ -46,9 +47,16 @@ public class Login extends HttpServlet {
 		LibraryManager manager = (LibraryManager)session.getAttribute("manager");
 		
 		if (manager != null) {
-			LibraryManager.Status i = manager.login(request.getParameter("username"), request.getParameter("password"));
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			
+			LibraryManager.Status i = manager.login(username, password);
 			if (i == LibraryManager.Status.USER_AUTH_OK) {
+				session.setAttribute("LoggedInUser", manager.getUser(username));
 				response.sendRedirect("./Home");
+			}
+			else if (i == LibraryManager.Status.USER_DOES_NOT_EXIST){
+				response.getWriter().print("User does not exist");
 			}
 		}
 		else {

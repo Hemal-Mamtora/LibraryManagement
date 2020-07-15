@@ -1,9 +1,10 @@
+package library;
 
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,16 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MyBooks
+ * Servlet implementation class ManageBook
  */
-@WebServlet("/MyBooks")
-public class MyBooks extends HttpServlet {
+@WebServlet("/ManageBook")
+public class ManageBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MyBooks() {
+    public ManageBook() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,14 +33,8 @@ public class MyBooks extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		BooksDAO DAO = new BooksDAO();
-		List<ReservationEntry> list = DAO.mine(request.getUserPrincipal().getName());
-		Map<Integer, String> hm = DAO.map();
 		
-		request.setAttribute("list", list);
-		request.setAttribute("hm", hm);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("MyBooks.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("ManageBook.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -47,18 +42,26 @@ public class MyBooks extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BooksDAO DAO = new BooksDAO();
+		// TODO Auto-generated method stub
 		try {
-			DAO.returnBook(Integer.parseInt(request.getParameter("id")),
-					Integer.parseInt(request.getParameter("bookid")));
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		response.sendRedirect("./MyBooks");
-	}
-
+			
+			Connection con = DatabaseConnection.initializeDatabase();
+			
+			PreparedStatement st = con.prepareStatement("insert into Book(name, copies) values (?, ?)");
+			st.setString(1, request.getParameter("name"));
+			st.setInt(2, Integer.valueOf(request.getParameter("copies")));
+			
+			st.executeUpdate();
+			st.close();
+			con.close();
+			
+			PrintWriter out = response.getWriter(); 
+            out.println("<html><body><b>Successfully Inserted"
+                        + "</b></body></html>"); 
+        } 
+        catch (Exception e) { 
+            e.printStackTrace(); 
+        } 
+    } 
+		
 }

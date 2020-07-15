@@ -26,7 +26,7 @@
 		</p>
 		<p>
 			<label>
-				<input type="checkbox" value="isLibrarian">
+				<input type="checkbox" name="isLibrarian" value="true">
 				Is Libarian
 			</label>
 		</p>

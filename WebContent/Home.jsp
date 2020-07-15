@@ -7,6 +7,21 @@
 <title>Home</title>
 </head>
 <body>
-	Successfully Logged in and on HomePage.
+<h1>You have successfully logged-in</h1>
+&nbsp;
+<a href="./MyBooks">MyBooks</a>
+&nbsp;
+<a href="./Reserve">Reserve Book</a>
+&nbsp;
+<%
+library.Person user = (library.Person)session.getAttribute("LoggedInUser");
+//System.out.println(user.getUsername()+user.isLibrarian());
+if(user != null && user.isLibrarian()){
+%>
+   <a href = "./ManageBook">Manage Book</a>
+   &nbsp;
+<% } %>
+
+<a href="./Logout" >Click to Logout </a> 
 </body>
 </html>
