@@ -1,19 +1,10 @@
 
 public class Person {
-	int id;
 	String name;
 	String username;
 	String pwd;
 	boolean isLibrarian;
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -46,8 +37,7 @@ public class Person {
 		this.isLibrarian = isLibrarian;
 	}
 
-	Person(int id, String name, String username, String pwd, boolean isLibrarian){
-		this.id = id;
+	Person(String name, String username, String pwd, boolean isLibrarian){
 		this.name = name;
 		this.username = username;
 		this.pwd = pwd;
