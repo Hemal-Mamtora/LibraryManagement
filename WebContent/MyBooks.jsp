@@ -10,7 +10,7 @@
 <body>
 <c:forEach items="${list}" var="entry">
     <tr>
-        <td>${hm[Integer(entry.bookid)]}</td>
+        <td>${books.get(entry.bookid).getName()}</td>
         <td>${entry.fromDate}</td>
         <td>${entry.toDate}</td>
         <td>

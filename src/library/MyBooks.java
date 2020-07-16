@@ -2,7 +2,7 @@ package library;
 
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MyBooks
@@ -33,32 +34,54 @@ public class MyBooks extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		BooksDAO DAO = new BooksDAO();
-		List<ReservationEntry> list = DAO.mine(request.getUserPrincipal().getName());
-		Map<Integer, String> hm = DAO.map();
+		HttpSession session = request.getSession();
+		PrintWriter writer = response.getWriter();
+		LibraryManager manager = (LibraryManager)session.getAttribute("manager");
+		Person user = (Person)session.getAttribute("LoggedInUser");
 		
-		request.setAttribute("list", list);
-		request.setAttribute("hm", hm);
+		if (manager != null){
+			List<ReservationEntry> list = manager.getMyReservations(user);
+			Map<Integer, Book> books = manager.getBooksAsMap();
+			
+			request.setAttribute("list", list);
+			request.setAttribute("books", books);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("MyBooks.jsp");
+			dispatcher.forward(request, response);
+		}
+		else {
+			writer.print("Session Expired");
+		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("MyBooks.jsp");
-		dispatcher.forward(request, response);
+		//BooksDAO DAO = new BooksDAO();
+		//List<ReservationEntry> list = DAO.mine(request.getUserPrincipal().getName());
+		//Map<Integer, String> hm = DAO.map();
+		
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BooksDAO DAO = new BooksDAO();
+		HttpSession session = request.getSession();
+		PrintWriter writer = response.getWriter();
+		LibraryManager manager = (LibraryManager)session.getAttribute("manager");
+		//Person user = (Person)session.getAttribute("LoggedInUser");
+		
 		try {
-			DAO.returnBook(Integer.parseInt(request.getParameter("id")),
-					Integer.parseInt(request.getParameter("bookid")));
+			if (manager!=null){
+				manager.returnBook(Integer.parseInt(request.getParameter("id")),
+						Integer.parseInt(request.getParameter("bookid")));
+			}
+			else {
+				writer.println("Session Expired");
+			}
+			
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		response.sendRedirect("./MyBooks");
 	}
 

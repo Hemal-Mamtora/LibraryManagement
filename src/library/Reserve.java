@@ -1,7 +1,8 @@
 package library;
 
 
-import java.io.IOException; 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Reserve
@@ -31,15 +33,21 @@ public class Reserve extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		BooksDAO booksDAO = new BooksDAO();
-		try {
-			List<Book> books = booksDAO.get();
+		HttpSession session = request.getSession();
+		
+		LibraryManager manager = (LibraryManager)session.getAttribute("manager");
 			
-			request.setAttribute("books", books);
+		try {
+			
+			if(manager != null) {
+				List<Book> books = manager.getAvailableBooks();
+				request.setAttribute("books", books);
+				
+			}
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Reserve.jsp");
-            
 			dispatcher.forward(request, response);
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -50,14 +58,22 @@ public class Reserve extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		PrintWriter writer = response.getWriter();
 		try {
-			int bookid = Integer.parseInt(request.getParameter("books"));
 			
-			BooksDAO booksDAO = new BooksDAO();
+			HttpSession session = request.getSession();
+			LibraryManager manager = (LibraryManager)session.getAttribute("manager");
 			
-			booksDAO.reserveBook(bookid, request.getUserPrincipal().getName());
-			response.getWriter().print("Book reserved sucessfully");
+			if (manager != null) {
+				int bookid = Integer.parseInt(request.getParameter("books"));
+				
+				manager.reserveBook(bookid, (Person)session.getAttribute("LoggedInUser"));
+				writer.print("Book reserved sucessfully");
+			}
+			else {
+				writer.print("Session Expired");
+			}
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();

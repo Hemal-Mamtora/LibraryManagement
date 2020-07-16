@@ -1,5 +1,5 @@
 package library;
-import java.sql.Date;
+import java.util.Date;
 
 public class ReservationEntry {
 	int id;

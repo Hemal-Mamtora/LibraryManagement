@@ -3,8 +3,6 @@ package library;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class ManageBook
@@ -45,15 +44,20 @@ public class ManageBook extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			
-			Connection con = DatabaseConnection.initializeDatabase();
+			HttpSession session = request.getSession();
 			
-			PreparedStatement st = con.prepareStatement("insert into Book(name, copies) values (?, ?)");
-			st.setString(1, request.getParameter("name"));
-			st.setInt(2, Integer.valueOf(request.getParameter("copies")));
+			LibraryManager manager = (LibraryManager)session.getAttribute("manager");
 			
-			st.executeUpdate();
-			st.close();
-			con.close();
+			if(manager == null) {
+				response.getWriter().println("Session expired, data loss, register again");
+				return;
+			}
+			
+			manager.addBook(new Book(
+				Integer.parseInt(request.getParameter("id")),
+				request.getParameter("name"),
+				Integer.parseInt(request.getParameter("copies"))
+			));
 			
 			PrintWriter out = response.getWriter(); 
             out.println("<html><body><b>Successfully Inserted"
